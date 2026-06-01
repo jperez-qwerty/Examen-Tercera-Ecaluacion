@@ -1,16 +1,16 @@
-# ⚔️ Turnos RPG: Mazmorras en Consola
+# 1. Título y Temática Elegida
+**Turnos RPG: Mazmorras en Consola**
+Juego de rol (RPG) táctico por turnos simulado en consola. El jugador explora una cuadrícula invisible y combate enemigos al coincidir en las mismas coordenadas.
 
-**Temática:** Juego de rol (RPG) táctico por turnos simulado en consola. El jugador explora una cuadrícula invisible y combate enemigos al coincidir en las mismas coordenadas.
+# 2. Arquitectura del Software
+Se ha optado por un diseño orientado a objetos con 5 clases, priorizando la encapsulación y la separación de responsabilidades:
+- **Main**: Simula el bucle principal y enruta los inputs.
+- **MotorJuego**: Clase cerebro. Controla los estados (MENU, JUGANDO, PAUSA, GAMEOVER), gestiona las entidades (añadir/eliminar) y la lógica matemática de colisiones.
+- **EntidadVideojuego**: Centraliza los datos espaciales (x, y, w, h) y atributos vitales de cualquier elemento (Jugador, Enemigo, Item).
+- **GestorEntradas**: Aísla la capa de captura de comandos de usuario (simulador táctil).
+- **SistemaGuardado**: Extrae la lógica de persistencia de datos (Advanced Feature) para no acoplarla al Motor.
 
-## 🏛️ Arquitectura del Software
-Se ha optado por un diseño orientado a objetos minimalista con 5 clases, priorizando la separación de responsabilidades:
-- `Main`: Simula el entorno de ejecución y bucle principal.
-- `MotorJuego`: Controla el ciclo de vida, estados y la lógica matemática (colisiones).
-- `EntidadVideojuego`: Centraliza los datos espaciales y atributos vitales de cualquier elemento (Player o NPC).
-- `GestorEntradas`: Aísla la capa de captura de comandos de usuario.
-- `SistemaGuardado`: Extrae la lógica de persistencia de datos (Advanced Feature) para no acoplarla al Motor.
-
-## 📊 Diagrama de Clases UML (Mermaid)
+# 3. Diagrama de Clases UML
 
 ```mermaid
 classDiagram
@@ -23,7 +23,14 @@ classDiagram
         -listaEntidades: List~EntidadVideojuego~
         -sistemaGuardado: SistemaGuardado
         +iniciarPartida() void
-        +actualizar(input: String) void
+        +pausarPartida() void
+        +reanudarPartida() void
+        +forzarGameOver() void
+        +añadirEntidad(e: EntidadVideojuego) void
+        +eliminarEntidad(e: EntidadVideojuego) void
+        +desplazarEntidad(direccion: String) void
+        +pulsarBotonAccion() void
+        +actualizar() void
         -verificarColisiones() void
         +getEstado() String
     }
@@ -52,7 +59,7 @@ classDiagram
         +generarGuardadoRapido(jugador: EntidadVideojuego, entidades: List) void
     }
 
-    Main --> MotorJuego : Ejecuta
-    Main --> GestorEntradas : Lee
-    MotorJuego --> EntidadVideojuego : Gestiona
-    MotorJuego --> SistemaGuardado : Utiliza
+    Main ..> MotorJuego : Ejecuta
+    Main ..> GestorEntradas : Lee
+    MotorJuego "1" --> "*" EntidadVideojuego : Gestiona
+    MotorJuego --> "1" SistemaGuardado : Utiliza
