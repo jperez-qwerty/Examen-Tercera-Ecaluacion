@@ -220,9 +220,72 @@ Jugador --> CU6
 * UML mediante Mermaid
 * Git
 * GitHub
+* Gemini
+* Chat-GPT
+
 
 ---
 
-# 7. Autor
+# 7. Bitácora del Uso de Inteligencia Artificial
 
-Proyecto desarrollado como práctica académica para la asignatura de Entornos de Desarrollo.
+## Herramienta Utilizada y Rol Asignado
+
+Durante el desarrollo de este proyecto se utilizó ChatGPT como asistente de apoyo para:
+
+* Diseño de la arquitectura orientada a objetos.
+* Revisión de la estructura de clases.
+* Generación de diagramas UML en formato Mermaid.
+* Redacción de documentación técnica y README.
+* Verificación de buenas prácticas de programación en Java.
+
+La implementación final, validación y adaptación del código fueron realizadas manualmente por el desarrollador.
+
+---
+
+## Muestra de Prompts Utilizados
+
+### Prompt 1
+
+```text
+Diseña un motor de videojuego sencillo en Java utilizando Programación Orientada a Objetos. Debe incluir una clase principal, una clase para las entidades del videojuego, un sistema de guardado y un gestor de entradas. Mantén el diseño simple y adecuado para una práctica académica.
+```
+
+### Prompt 2
+
+```text
+Genera un diagrama UML en Mermaid para un proyecto Java formado por las clases Main, MotorJuego, EntidadVideojuego, SistemaGuardado y GestorEntradas. El diagrama debe mostrar atributos privados, métodos públicos y relaciones entre clases.
+```
+
+---
+
+## Control de Errores de la IA
+
+Durante el proceso de diseño, la IA propuso inicialmente una solución excesivamente compleja para los requisitos de la práctica, añadiendo clases adicionales para la gestión de escenas, sistemas de físicas, renderizado y controladores especializados.
+
+Esta propuesta suponía una sobreingeniería innecesaria para los objetivos del proyecto y dificultaba el cumplimiento de los requisitos académicos.
+
+Para corregirlo se indicó explícitamente que:
+
+```text
+Reduce la solución al mínimo número de clases posible y ajusta el diseño a una práctica académica sencilla centrada en Programación Orientada a Objetos.
+```
+
+Posteriormente se simplificó la arquitectura hasta obtener únicamente las clases necesarias para implementar la funcionalidad requerida.
+
+Además, se revisó manualmente el código generado para verificar nombres de métodos, coherencia de responsabilidades y adecuación a los requisitos del examen.
+
+---
+
+## Reflexión Crítica
+
+El uso de inteligencia artificial durante el desarrollo permitió acelerar considerablemente la fase de diseño y documentación del proyecto. La IA facilitó la generación de ejemplos, diagramas UML y propuestas de organización del código, reduciendo el tiempo necesario para tareas repetitivas.
+
+Sin embargo, también presentó algunos riesgos. En varias ocasiones propuso soluciones más complejas de lo necesario o añadió funcionalidades que no estaban contempladas en los requisitos. Esto demuestra que las respuestas generadas por IA deben ser revisadas críticamente antes de incorporarse al proyecto.
+
+Bajo presión de tiempo, la IA puede ser una herramienta muy útil para aumentar la productividad y servir como apoyo técnico, pero no sustituye la comprensión del problema ni la responsabilidad del desarrollador en la validación del resultado final. El éxito del proyecto depende de combinar la asistencia de la IA con una revisión humana rigurosa.
+
+---
+
+# 8. Autor
+
+Proyecto desarrollado como examen práctico para la asignatura de Entornos de Desarrollo por Jose Pérez Lorente.
