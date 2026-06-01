@@ -1,14 +1,16 @@
 package examenfinal;
 public class GestorEntradas {
-    // Simula una secuencia predefinida de comandos para el examen
-    private String[] comandosSimulados = {"ARRIBA", "DERECHA", "ACCION", "GUARDAR", "SALIR"};
+    // Simulamos una secuencia que prueba todas las funcionalidades mínimas
+    private String[] comandosSimulados = {
+        "ABAJO", "ACCION", "PAUSA", "REANUDAR", "DERECHA", "GUARDAR", "GAMEOVER"
+    };
     private int indice = 0;
 
     public String obtenerSiguienteComando() {
         if (indice < comandosSimulados.length) {
-            System.out.println(">> Input simulado recibido: " + comandosSimulados[indice]);
             return comandosSimulados[indice++];
         }
         return "NADA";
     }
+
 }

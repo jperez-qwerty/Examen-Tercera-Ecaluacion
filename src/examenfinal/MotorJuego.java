@@ -1,9 +1,10 @@
 package examenfinal;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MotorJuego {
-    private String estadoJuego; // "MENU", "JUGANDO", "PAUSA", "GAMEOVER"
+    private String estadoJuego; 
     private EntidadVideojuego jugador;
     private List<EntidadVideojuego> listaEntidades;
     private SistemaGuardado sistemaGuardado;
@@ -14,49 +15,79 @@ public class MotorJuego {
         this.sistemaGuardado = new SistemaGuardado();
     }
 
+    // --- REQUISITO 1: CONTROL DE ESTADO ---
     public void iniciarPartida() {
-        System.out.println("\n[MOTOR] Inicializando estado a JUGANDO...");
+        System.out.println("\n[ESTADO] Iniciando partida...");
         this.estadoJuego = "JUGANDO";
         jugador = new EntidadVideojuego("Heroe", "JUGADOR", 0, 0, 100, "[H]");
-        listaEntidades.add(new EntidadVideojuego("Goblin", "ENEMIGO", 1, 1, 30, "[G]"));
+        
+        // REQUISITO 3: GESTIÓN DE ENTIDADES BÁSICA (Añadir)
+        añadirEntidad(new EntidadVideojuego("Goblin", "ENEMIGO", 1, 1, 30, "[G]"));
+        añadirEntidad(new EntidadVideojuego("Moneda Oro", "ITEM", 0, 1, 0, "[O]"));
+    }
+    public void pausarPartida() { this.estadoJuego = "PAUSA"; System.out.println("\n[ESTADO] Partida PAUSADA."); }
+    public void reanudarPartida() { this.estadoJuego = "JUGANDO"; System.out.println("\n[ESTADO] Partida REANUDADA."); }
+    public void forzarGameOver() { this.estadoJuego = "GAMEOVER"; System.out.println("\n[ESTADO] GAME OVER forzado."); }
+
+    // --- REQUISITO 3: GESTIÓN DE ENTIDADES BÁSICA ---
+    public void añadirEntidad(EntidadVideojuego e) {
+        listaEntidades.add(e);
+        System.out.println("[MOTOR] Entidad generada en mapa: " + e.getNombre());
+    }
+    public void eliminarEntidad(EntidadVideojuego e) {
+        listaEntidades.remove(e);
+        System.out.println("[MOTOR] Entidad eliminada del mapa: " + e.getNombre());
     }
 
-    public void actualizar(String input) {
-        if (!estadoJuego.equals("JUGANDO")) return;
-
-        System.out.println("[MOTOR] Actualizando frame...");
-        
-        // Procesar Input
-        switch (input) {
+    // --- REQUISITO 4: SIMULACIÓN DE INPUTS TÁCTILES ---
+    public void desplazarEntidad(String direccion) {
+        System.out.println("[INPUT TÁCTIL] Pad direccional pulsado: " + direccion);
+        switch (direccion) {
             case "ARRIBA": jugador.setY(jugador.getY() - 1); break;
             case "ABAJO": jugador.setY(jugador.getY() + 1); break;
             case "DERECHA": jugador.setX(jugador.getX() + 1); break;
             case "IZQUIERDA": jugador.setX(jugador.getX() - 1); break;
-            case "GUARDAR": sistemaGuardado.generarGuardadoRapido(jugador, listaEntidades); return;
-            case "SALIR": this.estadoJuego = "GAMEOVER"; return;
         }
+    }
 
-        // Funcionalidad Avanzada: Detector de Colisiones Simples
-        verificarColisiones();
+    public void pulsarBotonAccion() {
+        System.out.println("[INPUT TÁCTIL] Botón 'ACCION' pulsado en pantalla.");
+        EntidadVideojuego itemRecolectado = null;
+        for (EntidadVideojuego entidad : listaEntidades) {
+            if (entidad.getTipo().equals("ITEM") && jugador.getX() == entidad.getX() && jugador.getY() == entidad.getY()) {
+                System.out.println("!! Acción completada: Has recogido " + entidad.getNombre());
+                itemRecolectado = entidad;
+                break;
+            }
+        }
+        if (itemRecolectado != null) eliminarEntidad(itemRecolectado); // Requisito 3 (Eliminar)
+    }
+
+    // --- REQUISITO 2: SIMULACIÓN DEL BUCLE (GAME LOOP) ---
+    public void actualizar() {
+        if (!estadoJuego.equals("JUGANDO")) return;
+
+        System.out.println("[GAME LOOP] Actualizando posiciones y log de entidades...");
+        System.out.println(" -> " + jugador.toString());
+        for (EntidadVideojuego entidad : listaEntidades) {
+            System.out.println(" -> " + entidad.toString());
+        }
+        
+        verificarColisiones(); // Funcionalidad Avanzada
     }
 
     private void verificarColisiones() {
         for (EntidadVideojuego entidad : listaEntidades) {
-            if (entidad.getTipo().equals("ENEMIGO")) {
-                // Misma coordenada (x, y) asumiendo w=1 y h=1
-                if (jugador.getX() == entidad.getX() && jugador.getY() == entidad.getY()) {
-                    System.out.println("!! [COLISIÓN DETECTADA] Has chocado con " + entidad.getNombre());
-                    jugador.setPuntosVida(jugador.getPuntosVida() - 10);
-                    System.out.println("!! El jugador recibe 10 de daño. HP Restante: " + jugador.getPuntosVida());
-                    
-                    if (jugador.getPuntosVida() <= 0) {
-                        estadoJuego = "GAMEOVER";
-                        System.out.println("!! [ESTADO] Has muerto.");
-                    }
-                }
+            if (entidad.getTipo().equals("ENEMIGO") && jugador.getX() == entidad.getX() && jugador.getY() == entidad.getY()) {
+                System.out.println("!! [COLISIÓN] Combate contra " + entidad.getNombre());
+                jugador.setPuntosVida(jugador.getPuntosVida() - 10);
+                if (jugador.getPuntosVida() <= 0) forzarGameOver();
             }
         }
     }
 
     public String getEstado() { return estadoJuego; }
+    public EntidadVideojuego getJugador() { return jugador; }
+    public List<EntidadVideojuego> getListaEntidades() { return listaEntidades; }
+    public SistemaGuardado getSistemaGuardado() { return sistemaGuardado; }
 }
